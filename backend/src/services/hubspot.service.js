@@ -155,10 +155,6 @@ const createOrUpdateCompany = async (companyData) => {
     console.error("Error syncing company to HubSpot:", error.message);
     throw error;
   }
-};} catch (error) {
-    console.error("Error syncing company to HubSpot:", error.message);
-    throw error;
-  }
 };
 
 module.exports = {
