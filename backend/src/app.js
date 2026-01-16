@@ -52,9 +52,20 @@ const errorMiddleware = require("./middlewares/error.middleware");
 const app = express();
 
 // -------------------------------
+// CORS Configuration
+// -------------------------------
+app.use(
+  cors({
+    origin: "*", // Allow all origins (or specify your frontend domain)
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: false,
+  })
+);
+
+// -------------------------------
 // Global Middlewares
 // -------------------------------
-app.use(cors());
 app.use(express.json()); // normal JSON parsing for app CRUD
 
 // -------------------------------
@@ -62,6 +73,15 @@ app.use(express.json()); // normal JSON parsing for app CRUD
 // -------------------------------
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK", message: "Backend is running" });
+});
+
+// API Root endpoint
+app.get("/api", (req, res) => {
+  res.status(200).json({ 
+    message: "HubSpot CRM API", 
+    version: "1.0.0",
+    endpoints: ["/api/contacts", "/api/companies", "/api/webhooks"]
+  });
 });
 
 // -------------------------------
@@ -82,6 +102,14 @@ app.use(
   }),
   webhookRoutes
 );
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route not found: ${req.method} ${req.path}`,
+  });
+});
 
 // -------------------------------
 // Error Handler (must be last)
