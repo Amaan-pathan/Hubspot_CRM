@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://hubspot-crm-p324.onrender.com/api";
+
 const api = axios.create({
-  baseURL: "https://hubspot-crm-p324.onrender.com/api",
+  baseURL: BACKEND_URL,
   headers: {
     "Content-Type": "application/json",
   },
