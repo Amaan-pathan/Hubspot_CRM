@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: hubspot-crm-frontend
+    runtime: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublicPath: dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        value: https://hubspot-crm-p324.onrender.com/api
+    routes:
+      - path: /*
+        destination: /index.html
