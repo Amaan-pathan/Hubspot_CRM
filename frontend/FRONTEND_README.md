@@ -1,6 +1,6 @@
 # CRM Sync Frontend
 
-A React-based frontend for the HubSpot CRM integration app. Connects to the backend running on `http://localhost:5050`.
+A React-based frontend for the HubSpot CRM integration app. Connects to the backend running on `https://hubspot-crm-p324.onrender.com`.
 
 ## Folder Structure
 
@@ -41,7 +41,7 @@ src/
 - **ConflictResolver**: Side-by-side comparison of app vs HubSpot data with resolution options
 
 ### API Integration
-- All API calls use axios with baseURL configured to `http://localhost:5050/api`
+- All API calls use axios with baseURL configured to `https://hubspot-crm-p324.onrender.com/api`
 - Services for contacts and companies with CRUD functions
 - Error handling with user-friendly messages
 
@@ -54,7 +54,7 @@ src/
 
 ### Prerequisites
 - Node.js 16+
-- Backend running on `http://localhost:5050`
+- Backend running on `https://hubspot-crm-p324.onrender.com`
 
 ### Installation
 ```bash
@@ -75,7 +75,7 @@ npm run build
 
 ## API Endpoints
 
-The frontend connects to the backend at `http://localhost:5050/api`:
+The frontend connects to the backend at `https://hubspot-crm-p324.onrender.com/api`:
 
 - `GET /contacts` - Get all contacts
 - `GET /contacts/:id` - Get contact by ID
