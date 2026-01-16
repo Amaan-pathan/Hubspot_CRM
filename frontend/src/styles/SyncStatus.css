@@ -1,0 +1,70 @@
+.sync-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.status-app {
+  background-color: #d5f4e6;
+  color: #27ae60;
+}
+
+.status-hubspot {
+  background-color: #fadbd8;
+  color: #e74c3c;
+}
+
+.status-unknown {
+  background-color: #fef5e7;
+  color: #f39c12;
+}
+
+.hubspot-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hubspot-badge.synced {
+  background-color: #d5f4e6;
+  color: #27ae60;
+}
+
+.hubspot-badge.pending {
+  background-color: #fef5e7;
+  color: #f39c12;
+}
+
+.modified-date {
+  font-size: 0.75rem;
+  color: #7f8c8d;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .sync-status {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .status-badge,
+  .hubspot-badge {
+    min-width: fit-content;
+  }
+}
