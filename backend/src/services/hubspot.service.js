@@ -3,8 +3,17 @@ const axios = require("axios");
 const HUBSPOT_API_BASE = "https://api.hubapi.com";
 const HUBSPOT_ACCESS_TOKEN = process.env.HUBSPOT_ACCESS_TOKEN;
 
+// Validate token at startup
+if (!HUBSPOT_ACCESS_TOKEN) {
+  console.warn("WARNING: HUBSPOT_ACCESS_TOKEN is not set. HubSpot sync will not work.");
+}
+
 const getContactFromHubSpot = async (contactId) => {
   try {
+    if (!HUBSPOT_ACCESS_TOKEN) {
+      throw new Error("HUBSPOT_ACCESS_TOKEN is not configured");
+    }
+
     const response = await axios.get(
       `${HUBSPOT_API_BASE}/crm/v3/objects/contacts/${contactId}`,
       {
@@ -27,6 +36,10 @@ const getContactFromHubSpot = async (contactId) => {
 
 const getCompanyFromHubSpot = async (companyId) => {
   try {
+    if (!HUBSPOT_ACCESS_TOKEN) {
+      throw new Error("HUBSPOT_ACCESS_TOKEN is not configured");
+    }
+
     const response = await axios.get(
       `${HUBSPOT_API_BASE}/crm/v3/objects/companies/${companyId}`,
       {
@@ -49,12 +62,16 @@ const getCompanyFromHubSpot = async (companyId) => {
 
 const createOrUpdateContact = async (contactData) => {
   try {
+    if (!HUBSPOT_ACCESS_TOKEN) {
+      throw new Error("HUBSPOT_ACCESS_TOKEN is not configured");
+    }
+
     const payload = {
       properties: {
-        firstname: contactData.firstName,
-        lastname: contactData.lastName,
-        email: contactData.email,
-        phone: contactData.phone,
+        firstname: contactData.firstName || "",
+        lastname: contactData.lastName || "",
+        email: contactData.email || "",
+        phone: contactData.phone || "",
       },
     };
 
@@ -90,17 +107,17 @@ const createOrUpdateContact = async (contactData) => {
     return response.data;
   } catch (error) {
     console.error("Error syncing contact to HubSpot:", error.message);
-    throw error;
-  }
-};
-
 const createOrUpdateCompany = async (companyData) => {
   try {
+    if (!HUBSPOT_ACCESS_TOKEN) {
+      throw new Error("HUBSPOT_ACCESS_TOKEN is not configured");
+    }
+
     const payload = {
       properties: {
-        name: companyData.name,
-        domain: companyData.domain,
-        industry: companyData.industry,
+        name: companyData.name || "",
+        domain: companyData.domain || "",
+        industry: companyData.industry || "",
       },
     };
 
@@ -135,6 +152,10 @@ const createOrUpdateCompany = async (companyData) => {
     console.log("Company synced to HubSpot:", response.data.id);
     return response.data;
   } catch (error) {
+    console.error("Error syncing company to HubSpot:", error.message);
+    throw error;
+  }
+};} catch (error) {
     console.error("Error syncing company to HubSpot:", error.message);
     throw error;
   }

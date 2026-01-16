@@ -13,6 +13,11 @@ const verifyWebhookSignature = (req) => {
     return false;
   }
 
+  if (!process.env.HUBSPOT_WEBHOOK_SECRET) {
+    console.warn("WARNING: HUBSPOT_WEBHOOK_SECRET is not configured. Webhook signature verification will fail.");
+    return false;
+  }
+
   const stringToSign = `${req.method}${req.originalUrl}${body}${timestamp}`;
   const hash = crypto
     .createHmac("sha256", process.env.HUBSPOT_WEBHOOK_SECRET)

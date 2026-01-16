@@ -21,7 +21,7 @@ const Companies = () => {
       setCompanies(response.data || []);
       setError(null);
     } catch (err) {
-      setError("Failed to fetch companies");
+      setError(err.response?.data?.message || "Failed to fetch companies");
       console.error(err);
     } finally {
       setLoading(false);
@@ -72,7 +72,26 @@ const Companies = () => {
         </button>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
+      {error && (
+        <div className="error-message">
+          {error}
+          <button
+            onClick={() => fetchCompanies()}
+            style={{
+              marginLeft: "1rem",
+              padding: "0.25rem 0.75rem",
+              fontSize: "0.875rem",
+              backgroundColor: "#3498db",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      )}
 
       {loading ? (
         <div className="loading">Loading companies...</div>
@@ -93,30 +112,38 @@ const Companies = () => {
               </tr>
             </thead>
             <tbody>
-              {companies.map((company) => (
-                <tr key={company._id}>
-                  <td>{company.name}</td>
-                  <td>{company.domain || "-"}</td>
-                  <td>{company.industry || "-"}</td>
-                  <td>
-                    <SyncStatus entity={company} />
-                  </td>
-                  <td className="actions">
-                    <button
-                      className="btn btn-sm btn-info"
-                      onClick={() => handleEditCompany(company)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() => handleDeleteCompany(company._id)}
-                    >
-                      Delete
-                    </button>
+              {companies && companies.length > 0 ? (
+                companies.map((company) => (
+                  <tr key={company._id}>
+                    <td>{company.name || "-"}</td>
+                    <td>{company.domain || "-"}</td>
+                    <td>{company.industry || "-"}</td>
+                    <td>
+                      <SyncStatus entity={company} />
+                    </td>
+                    <td className="actions">
+                      <button
+                        className="btn btn-sm btn-info"
+                        onClick={() => handleEditCompany(company)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() => handleDeleteCompany(company._id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "center", padding: "2rem" }}>
+                    No companies to display
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

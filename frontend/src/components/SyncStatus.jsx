@@ -7,18 +7,20 @@ const SyncStatus = ({ entity }) => {
   const lastModified = entity.lastModifiedAt
     ? new Date(entity.lastModifiedAt).toLocaleDateString()
     : "N/A";
-  const hubspotId = entity.hubspotId ? "✓ Synced" : "⏳ Pending";
+  const isSynced = entity.hubspotId ? true : false;
+  const hubspotStatusText = isSynced ? "Synced" : "Pending";
+  const lastModifiedStr = entity.lastModifiedAt ? new Date(entity.lastModifiedAt).toISOString() : "N/A";
 
   return (
     <div className="sync-status">
       <span className={`status-badge status-${source.toLowerCase()}`}>
         {source}
       </span>
-      <span className={`hubspot-badge ${entity.hubspotId ? "synced" : "pending"}`}>
-        {hubspotId}
+      <span className={`hubspot-badge ${isSynced ? "synced" : "pending"}`}>
+        {hubspotStatusText}
       </span>
-      <span className="modified-date" title={entity.lastModifiedAt}>
-        Modified: {lastModified}
+      <span className="modified-date" title={lastModifiedStr}>
+        {lastModified}
       </span>
     </div>
   );

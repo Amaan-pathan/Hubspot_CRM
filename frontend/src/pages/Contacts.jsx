@@ -21,7 +21,7 @@ const Contacts = () => {
       setContacts(response.data || []);
       setError(null);
     } catch (err) {
-      setError("Failed to fetch contacts");
+      setError(err.response?.data?.message || "Failed to fetch contacts");
       console.error(err);
     } finally {
       setLoading(false);
@@ -72,7 +72,26 @@ const Contacts = () => {
         </button>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
+      {error && (
+        <div className="error-message">
+          {error}
+          <button
+            onClick={() => fetchContacts()}
+            style={{
+              marginLeft: "1rem",
+              padding: "0.25rem 0.75rem",
+              fontSize: "0.875rem",
+              backgroundColor: "#3498db",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      )}
 
       {loading ? (
         <div className="loading">Loading contacts...</div>
@@ -94,31 +113,39 @@ const Contacts = () => {
               </tr>
             </thead>
             <tbody>
-              {contacts.map((contact) => (
-                <tr key={contact._id}>
-                  <td>{contact.firstName}</td>
-                  <td>{contact.lastName || "-"}</td>
-                  <td>{contact.email}</td>
-                  <td>{contact.phone || "-"}</td>
-                  <td>
-                    <SyncStatus entity={contact} />
-                  </td>
-                  <td className="actions">
-                    <button
-                      className="btn btn-sm btn-info"
-                      onClick={() => handleEditContact(contact)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() => handleDeleteContact(contact._id)}
-                    >
-                      Delete
-                    </button>
+              {contacts && contacts.length > 0 ? (
+                contacts.map((contact) => (
+                  <tr key={contact._id}>
+                    <td>{contact.firstName || "-"}</td>
+                    <td>{contact.lastName || "-"}</td>
+                    <td>{contact.email || "-"}</td>
+                    <td>{contact.phone || "-"}</td>
+                    <td>
+                      <SyncStatus entity={contact} />
+                    </td>
+                    <td className="actions">
+                      <button
+                        className="btn btn-sm btn-info"
+                        onClick={() => handleEditContact(contact)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() => handleDeleteContact(contact._id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" style={{ textAlign: "center", padding: "2rem" }}>
+                    No contacts to display
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
